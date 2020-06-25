@@ -46,14 +46,20 @@ class Teacher(Resource):
             teacher.gender = data["gender"]
             teacher.date_of_birth = data["date_of_birth"]
             teacher.phone_number = data["phone_number"]
-        teacher.save_to_db()
+        try:
+            teacher.save_to_db()
+        except:
+            return {"message": "An error occurred while inserting data."}, 500
         return teacher.json()
 
     @jwt_required()
     def delete(self, cnic):
         teacher = TeacherModel.find_by_cnic(cnic)
         if teacher:
-            teacher.delete_from_db()
+            try:
+                teacher.delete_from_db()
+            except:
+                return {"message": "An error occurred while deleting data."}, 500
 
         return {"message": "teacher deleted"}
 

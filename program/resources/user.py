@@ -14,6 +14,9 @@ class User(Resource):
             return {"message": "A user with that username already exists."}, 400
 
         user = UserModel(**data)
-        user.save_to_db()
+        try:
+            user.save_to_db()
+        except:
+            return {"message": "An error occurred while inserting data."}, 500
 
         return {"message": "user created successfully"}, 201

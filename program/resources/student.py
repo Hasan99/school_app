@@ -40,7 +40,10 @@ class Student(Resource):
     def delete(self, b_form_cnic):
         student = StudentModel.find_by_b_form_cnic(b_form_cnic)
         if student:
-            student.delete_from_db()
+            try:
+                student.delete_from_db()
+            except:
+                return {"message": "An error occurred while deleting data."}, 500
         return {"message": "student deleted"}
 
     @jwt_required()
@@ -59,7 +62,10 @@ class Student(Resource):
             student.class_id = data["class_id"]
             student.parent_id = data["parent_id"]
 
-        student.save_to_db()
+        try:
+            student.save_to_db()
+        except:
+            return {"message": "An error occurred while inserting data"}, 500
         return student.json()
 
 
